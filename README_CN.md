@@ -14,7 +14,7 @@ lib/
 │   └── bindings/          # 依赖注入绑定
 └── main.dart              # 应用入口
 ```
-
+![getx_demo](https://github.com/lizy-coding/getx_demo/blob/master/getx_test.gif)
 ## 功能特性
 
 本项目展示了 GetX 的六大核心功能：
