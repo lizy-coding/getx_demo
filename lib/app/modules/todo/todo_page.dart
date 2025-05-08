@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:getx_demo/app/controllers/todo_controller.dart';
+import 'package:getx_demo/app/core/logger.dart' show AppLogger;
 
 /// Todo页面
 /// 展示GetX的数据持久化功能
 class TodoPage extends GetView<TodoController> {
-  TodoPage({Key? key}) : super(key: key);
-  
+  TodoPage({super.key});
+
   // 文本编辑控制器
   final TextEditingController textController = TextEditingController();
 
@@ -40,14 +41,11 @@ class TodoPage extends GetView<TodoController> {
                   ),
                 ),
                 const SizedBox(width: 10),
-                ElevatedButton(
-                  onPressed: _addTodo,
-                  child: Text('add_todo'.tr),
-                ),
+                ElevatedButton(onPressed: _addTodo, child: Text('add_todo'.tr)),
               ],
             ),
           ),
-          
+
           // 过滤选项
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -55,11 +53,15 @@ class TodoPage extends GetView<TodoController> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 // 左侧显示剩余项目数
-                Obx(() => Text(
-                  'items_left'.trParams({'count': controller.activeCount.toString()}),
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                )),
-                
+                Obx(
+                  () => Text(
+                    'items_left'.trParams({
+                      'count': controller.activeCount.toString(),
+                    }),
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ),
+
                 // 右侧过滤按钮
                 Row(
                   children: [
@@ -73,26 +75,32 @@ class TodoPage extends GetView<TodoController> {
               ],
             ),
           ),
-          
+
           const Divider(),
-          
+
           // Todo列表
           Expanded(
             child: Obx(() {
-              print('【Todo管理】重建Todo列表UI，已过滤: ${controller.filterStatus.value}');
-              
+              final logger = Get.find<AppLogger>();
+              logger.d(
+                '【Todo管理】重建Todo列表UI，已过滤: ${controller.filterStatus.value}',
+              );
+
               if (controller.isLoading.value) {
                 return const Center(child: CircularProgressIndicator());
               }
-              
+
               final todos = controller.filteredTodos;
-              
+
               if (todos.isEmpty) {
                 return Center(
-                  child: Text('no_todos'.tr, style: const TextStyle(fontSize: 18)),
+                  child: Text(
+                    'no_todos'.tr,
+                    style: const TextStyle(fontSize: 18),
+                  ),
                 );
               }
-              
+
               return ListView.builder(
                 itemCount: todos.length,
                 itemBuilder: (context, index) {
@@ -102,14 +110,14 @@ class TodoPage extends GetView<TodoController> {
               );
             }),
           ),
-          
+
           // 底部操作按钮
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: ElevatedButton(
               onPressed: () {
                 controller.clearCompleted();
-                
+
                 // 使用GetX对话框
                 Get.dialog(
                   AlertDialog(
@@ -131,7 +139,7 @@ class TodoPage extends GetView<TodoController> {
       ),
     );
   }
-  
+
   /// 构建Todo项
   Widget _buildTodoItem(TodoItem todo) {
     return ListTile(
@@ -156,23 +164,27 @@ class TodoPage extends GetView<TodoController> {
       ),
     );
   }
-  
+
   /// 构建过滤按钮
   Widget _buildFilterButton(String text, String filter) {
-    return Obx(() => ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        backgroundColor: controller.filterStatus.value == filter
-            ? Get.theme.colorScheme.primary
-            : Get.theme.colorScheme.surfaceVariant,
-        foregroundColor: controller.filterStatus.value == filter
-            ? Get.theme.colorScheme.onPrimary
-            : Get.theme.colorScheme.onSurfaceVariant,
+    return Obx(
+      () => ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          backgroundColor:
+              controller.filterStatus.value == filter
+                  ? Get.theme.colorScheme.primary
+                  : Get.theme.colorScheme.surfaceVariant,
+          foregroundColor:
+              controller.filterStatus.value == filter
+                  ? Get.theme.colorScheme.onPrimary
+                  : Get.theme.colorScheme.onSurfaceVariant,
+        ),
+        onPressed: () => controller.setFilter(filter),
+        child: Text(text),
       ),
-      onPressed: () => controller.setFilter(filter),
-      child: Text(text),
-    ));
+    );
   }
-  
+
   /// 添加新的Todo
   void _addTodo() {
     if (textController.text.trim().isNotEmpty) {
@@ -189,4 +201,4 @@ class TodoPage extends GetView<TodoController> {
       );
     }
   }
-} 
+}

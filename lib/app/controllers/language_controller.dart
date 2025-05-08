@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:getx_demo/app/core/logger.dart';
 
 /// 语言控制器
 /// 用于管理应用的语言设置
 class LanguageController extends GetxController {
+  final logger = Get.find<AppLogger>();
+
   // 使用Get Storage存储语言设置
   final _storage = GetStorage();
   final _languageKey = 'language';
-  
+
   // 支持的语言列表
   final List<Map<String, dynamic>> languages = [
     {
@@ -30,7 +33,7 @@ class LanguageController extends GetxController {
     super.onInit();
     // 从存储中加载语言设置
     currentLanguageCode.value = _loadLanguageFromStorage();
-    print('【国际化】初始化语言: ${currentLanguageCode.value}');
+    logger.d('【国际化】初始化语言: ${currentLanguageCode.value}');
     
     // 设置初始语言
     updateLocale(currentLanguageCode.value);
@@ -53,7 +56,7 @@ class LanguageController extends GetxController {
       Get.updateLocale(locale);
       currentLanguageCode.value = languageCode;
       _saveLanguageToStorage(languageCode);
-      print('【国际化】语言已更新: $languageCode');
+      logger.d('【国际化】语言已更新: $languageCode');
     }
   }
   
@@ -68,7 +71,7 @@ class LanguageController extends GetxController {
     String nextLanguageCode = languages[nextIndex]['locale'].languageCode;
     
     updateLocale(nextLanguageCode);
-    print('【国际化】切换语言: $nextLanguageCode');
+    logger.d('【国际化】切换语言: $nextLanguageCode');
   }
   
   /// 获取当前语言名称

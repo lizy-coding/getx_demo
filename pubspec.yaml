@@ -39,6 +39,7 @@ dependencies:
   get: ^4.6.6
   # GetX 存储库
   get_storage: ^2.1.1
+  logger: ^2.5.0
 
 dev_dependencies:
   flutter_test:
