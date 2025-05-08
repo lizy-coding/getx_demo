@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:getx_demo/app/controllers/counter_controller.dart';
-
+import 'package:getx_demo/app/core/logger.dart' show AppLogger;
 /// 简单计数器页面
 /// 展示GetX的简单状态管理功能
 class SimpleCounterPage extends StatelessWidget {
-  SimpleCounterPage({Key? key}) : super(key: key);
+  const SimpleCounterPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +27,8 @@ class SimpleCounterPage extends StatelessWidget {
             // 只有当调用update()时才会重建此小部件
             GetBuilder<CounterController>(
               builder: (controller) {
-                print('【简单状态管理】GetBuilder重建UI, 当前计数: ${controller.counter}');
+                final logger = Get.find<AppLogger>();
+                logger.d('【简单状态管理】GetBuilder重建UI, 当前计数: ${controller.counter}');
                 return Column(
                   children: [
                     Text(

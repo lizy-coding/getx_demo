@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:getx_demo/app/controllers/reactive_counter_controller.dart';
+import 'package:getx_demo/app/core/logger.dart' show AppLogger;
 
 /// 响应式计数器页面
 /// 展示GetX的响应式状态管理功能
 class ReactiveCounterPage extends StatelessWidget {
-  ReactiveCounterPage({Key? key}) : super(key: key);
-  
+  ReactiveCounterPage({super.key});
+
   // 使用Get.find获取控制器实例
-  final ReactiveCounterController controller = Get.find<ReactiveCounterController>();
+  final ReactiveCounterController controller =
+      Get.find<ReactiveCounterController>();
 
   @override
   Widget build(BuildContext context) {
@@ -26,22 +28,28 @@ class ReactiveCounterPage extends StatelessWidget {
           children: [
             // 使用Obx监听响应式变量的变化
             Obx(() {
-              print('【响应式状态管理】Obx重建计数UI: ${controller.count.value}');
+              final logger = Get.find<AppLogger>();
+              logger.d('【响应式状态管理】Obx重建计数UI: ${controller.count.value}');
               return Column(
                 children: [
                   Text(
-                    'count_value'.trParams({'value': controller.count.value.toString()}),
+                    'count_value'.trParams({
+                      'value': controller.count.value.toString(),
+                    }),
                     style: const TextStyle(fontSize: 24),
                   ),
                   const SizedBox(height: 10),
                   // 根据count的奇偶性显示不同的文本
                   Obx(() {
-                    print('【响应式状态管理】Obx重建偶数/奇数状态UI');
+                    logger.d('【响应式状态管理】Obx重建偶数/奇数状态UI');
                     return Text(
                       controller.isEven.value ? 'is_even'.tr : 'is_odd'.tr,
                       style: TextStyle(
                         fontSize: 16,
-                        color: controller.isEven.value ? Colors.green : Colors.orange,
+                        color:
+                            controller.isEven.value
+                                ? Colors.green
+                                : Colors.orange,
                         fontWeight: FontWeight.bold,
                       ),
                     );
@@ -75,7 +83,9 @@ class ReactiveCounterPage extends StatelessWidget {
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
                       color: Get.theme.colorScheme.surface,
-                      borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+                      borderRadius: const BorderRadius.vertical(
+                        top: Radius.circular(20),
+                      ),
                     ),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
@@ -97,7 +107,9 @@ class ReactiveCounterPage extends StatelessWidget {
                     ),
                   ),
                   shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+                    borderRadius: BorderRadius.vertical(
+                      top: Radius.circular(20),
+                    ),
                   ),
                 );
               },
@@ -111,10 +123,7 @@ class ReactiveCounterPage extends StatelessWidget {
                 children: [
                   const Text(
                     '【响应式状态管理】',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    ),
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                   ),
                   const SizedBox(height: 8),
                   const Text(
@@ -126,9 +135,7 @@ class ReactiveCounterPage extends StatelessWidget {
                   const Text(
                     '通过在控制器中使用workers（ever、debounce等）可以监听响应式变量变化并执行额外操作。',
                     textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontStyle: FontStyle.italic,
-                    ),
+                    style: TextStyle(fontStyle: FontStyle.italic),
                   ),
                 ],
               ),
@@ -138,4 +145,4 @@ class ReactiveCounterPage extends StatelessWidget {
       ),
     );
   }
-} 
+}

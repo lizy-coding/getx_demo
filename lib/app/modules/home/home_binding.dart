@@ -5,6 +5,7 @@ import 'package:getx_demo/app/controllers/language_controller.dart';
 import 'package:getx_demo/app/controllers/counter_controller.dart';
 import 'package:getx_demo/app/controllers/reactive_counter_controller.dart';
 import 'package:getx_demo/app/controllers/todo_controller.dart';
+import 'package:getx_demo/app/core/logger.dart' show AppLogger;
 
 /// 主页面绑定类
 /// 负责将控制器注入到依赖管理器中
@@ -31,6 +32,7 @@ class HomeBinding extends Bindings {
     // Todo列表控制器 - 懒加载单例
     Get.lazyPut<TodoController>(() => TodoController(), fenix: true);
     
-    print('【依赖注入】HomeBinding - 所有控制器已注册');
+    final logger = Get.find<AppLogger>();
+    logger.d('【依赖注入】HomeBinding - 所有控制器已注册');
   }
 } 
