@@ -10,6 +10,7 @@ class AppTranslations extends Translations {
     // 从单独的翻译文件中加载内容
     'en_US': enUS,
     'zh_CN': zhCN,
+    'ar_SA': arSA, // 新增阿拉伯语映射
     // 添加新语言时，只需在此处添加新的映射
     // 例如: 'ja_JP': jaJP,
   };
