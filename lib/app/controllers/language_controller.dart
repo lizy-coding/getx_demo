@@ -23,7 +23,7 @@ class LanguageController extends GetxController {
   ];
 
   // 响应式变量，跟踪当前语言
-  Rx<String> currentLanguageCode = 'en'.obs;
+  final RxString currentLanguageCode = 'en'.obs;  // 初始值根据需求调整
 
   /// 当控制器被创建时调用
   @override
@@ -77,9 +77,18 @@ class LanguageController extends GetxController {
   String get currentLanguageName {
     final currentLang = languages.firstWhere(
       (lang) => lang['locale'].languageCode == currentLanguageCode.value,
-      orElse: () => languages[0],
+      orElse: () => languages.first,
     );
-    return currentLang['name'];
+    return currentLang['name'] as String;
+  }
+
+  // 原有的updateLocale方法需要确保触发语言切换
+  // 重命名方法以避免名称冲突
+  void updateLocaleNew(String languageCode) {
+    currentLanguageCode.value = languageCode;
+    _saveLanguageToStorage(languageCode);
+    Get.updateLocale(Locale(languageCode)); // 关键：更新应用locale
+    logger.d('【国际化】切换语言: $languageCode');
   }
 
   /// 从语言代码获取Locale对象

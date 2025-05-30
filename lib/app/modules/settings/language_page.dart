@@ -5,7 +5,7 @@ import 'package:getx_demo/app/controllers/language_controller.dart';
 /// 语言设置页面
 /// 展示GetX的国际化功能
 class LanguagePage extends GetView<LanguageController> {
-  const LanguagePage({Key? key}) : super(key: key);
+  const LanguagePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -37,47 +37,30 @@ class LanguagePage extends GetView<LanguageController> {
 
             const SizedBox(height: 24),
 
-            // 语言列表
-            ListView.builder(
-              shrinkWrap: true,
-              itemCount: controller.languages.length,
-              itemBuilder: (context, index) { // This is the context we need to pass
-                final language = controller.languages[index];
-                return Obx(
-                  () => _buildLanguageItem(
-                    context: context, // Pass the context here
-                    title: language['name'] as String,
-                    languageCode: language['locale'].languageCode as String,
-                    isSelected:
-                        controller.currentLanguageCode.value ==
-                        language['locale'].languageCode,
-                    onTap:
-                        () => controller.updateLocale(
-                          language['locale'].languageCode,
-                        ),
-                  ),
-                );
-              },
-            ),
-
-            const SizedBox(height: 40),
-
-            // 语言切换按钮
-            Center(
-              child: ElevatedButton.icon(
-                onPressed: controller.toggleLanguage,
-                icon: const Icon(Icons.language),
-                label: const Text('切换语言'),
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 24,
-                    vertical: 12,
-                  ),
-                ),
+            // 下拉框语言选择（修改部分）
+            Obx(
+              () => DropdownButton<String>(
+                value: controller.currentLanguageCode.value,
+                isExpanded: true, // 让下拉框宽度撑满父容器
+                items:
+                    controller.languages.map((language) {
+                      return DropdownMenuItem<String>(
+                        value: language['locale'].languageCode,
+                        child: Text(language['name'] as String),
+                      );
+                    }).toList(),
+                onChanged: (newValue) {
+                  if (newValue != null) {
+                    controller.updateLocale(newValue);
+                  }
+                },
               ),
             ),
 
             const SizedBox(height: 40),
+
+            // 移除原切换语言按钮（修改部分）
+            // 原 ElevatedButton.icon 组件已删除
 
             // 国际化说明
             const Padding(
@@ -129,7 +112,9 @@ class LanguagePage extends GetView<LanguageController> {
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Row(
-            textDirection: Directionality.of(context), // Now uses the passed context
+            textDirection: Directionality.of(
+              context,
+            ), // Now uses the passed context
             children: [
               // 选中图标在 RTL 中显示在右侧
               if (isSelected)
