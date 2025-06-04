@@ -8,8 +8,14 @@ import 'dart:convert';
 class AppTranslations extends Translations {
   static final Map<String, Map<String, String>> _cachedTranslations = {};
 
+  // Static getter for LanguageController to log cached keys for debugging
+  static Iterable<String> get cachedLanguageCodes => _cachedTranslations.keys;
+
   @override
-  Map<String, Map<String, String>> get keys => _cachedTranslations;
+  Map<String, Map<String, String>> get keys {
+    Get.log('AppTranslations.keys accessed by GetX. Currently cached languages: ${_cachedTranslations.keys.toList()}. Returning all cached translations.');
+    return _cachedTranslations;
+  }
 
   /// 动态加载指定语言的JSON翻译文件（带缓存）
   static Future<void> load(String languageCode) async {
