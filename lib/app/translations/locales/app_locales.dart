@@ -3,6 +3,7 @@
 
 export 'en_US.dart';
 export 'zh_CN.dart';
+export 'ar_SA.dart'; // 新增阿拉伯语导出
 
 // 添加新语言时，只需在此处添加新的导出语句
 // 例如: export 'ja_JP.dart';

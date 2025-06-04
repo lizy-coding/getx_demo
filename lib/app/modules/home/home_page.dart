@@ -31,11 +31,27 @@ class HomePage extends StatelessWidget {
                 ? 'light_mode'.tr
                 : 'dark_mode'.tr,
           )),
-          // 语言切换按钮
-          IconButton(
-            onPressed: languageController.toggleLanguage,
+          // 语言切换下拉菜单（优化后）
+          PopupMenuButton<String>(
             icon: const Icon(Icons.language),
             tooltip: 'language_settings'.tr,
+            // 仅在需要响应式更新的部分使用 Obx（如选中状态）
+            itemBuilder: (context) => languageController.languages.map((language) {
+              return PopupMenuItem<String>(
+                value: language['locale'].languageCode,
+                child: Obx(() => Row(  // 仅包裹需要响应 currentLanguageCode 的子部件
+                  children: [
+                    if (language['locale'].languageCode == languageController.currentLanguageCode.value)
+                      Icon(Icons.check, color: Get.theme.colorScheme.primary),
+                    const SizedBox(width: 8),
+                    Text(language['name'] as String),
+                  ],
+                )),
+              );
+            }).toList(),
+            onSelected: (languageCode) {
+              languageController.updateLocale(languageCode);
+            },
           ),
         ],
       ),
@@ -118,4 +134,4 @@ class HomePage extends StatelessWidget {
       ),
     );
   }
-} 
+}
