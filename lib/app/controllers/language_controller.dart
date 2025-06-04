@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:getx_demo/app/core/logger.dart';
+import 'package:getx_demo/app/translations/app_translations.dart' show AppTranslations;
 
 /// 语言控制器
 /// 用于管理应用的语言设置
@@ -24,16 +25,22 @@ class LanguageController extends GetxController {
 
   // 响应式变量，跟踪当前语言
   final RxString currentLanguageCode = 'en'.obs;  // 初始值根据需求调整
+  String? _previousLanguageCode; // 记录上一次使用的语言代码（新增）
 
   /// 当控制器被创建时调用
   @override
   void onInit() {
     super.onInit();
-    // 从存储中加载语言设置
-    currentLanguageCode.value = _loadLanguageFromStorage();
-    logger.d('【国际化】初始化语言: ${currentLanguageCode.value}');
+    _initDefaultLanguage();
+  }
 
-    // 设置初始语言
+  /// 初始化默认语言（仅加载中文）
+  void _initDefaultLanguage() async {
+    final savedLang = _loadLanguageFromStorage();
+    currentLanguageCode.value = savedLang.isNotEmpty ? savedLang : 'zh_CN';
+    
+    // 启动时仅加载默认语言（中文）
+    await AppTranslations.load(currentLanguageCode.value);
     updateLocale(currentLanguageCode.value);
   }
 
@@ -47,14 +54,28 @@ class LanguageController extends GetxController {
     _storage.write(_languageKey, languageCode);
   }
 
-  /// 通过语言代码更新应用语言
-  void updateLocale(String languageCode) {
+  /// 通过语言代码更新应用语言（关键修改）
+  void updateLocale(String languageCode) async {
+    // 记录当前语言作为上一次语言（切换前）
+    if (currentLanguageCode.value.isNotEmpty) {
+      _previousLanguageCode = currentLanguageCode.value;
+    }
+
+    // 切换语言时加载对应JSON文件（未缓存时才加载）
+    await AppTranslations.load(languageCode);
+    
     final locale = _getLocaleFromLanguageCode(languageCode);
     if (locale != null) {
       Get.updateLocale(locale);
       currentLanguageCode.value = languageCode;
       _saveLanguageToStorage(languageCode);
-      logger.d('【国际化】语言已更新: $languageCode');
+      logger.d('【国际化】语言切换成功: $languageCode');
+
+      // 卸载上一次使用的语言缓存（非当前语言时）
+      if (_previousLanguageCode != null && _previousLanguageCode != languageCode) {
+        AppTranslations.unload(_previousLanguageCode!);
+        logger.d('【国际化】已卸载旧语言缓存: $_previousLanguageCode');
+      }
     }
   }
 
@@ -80,15 +101,6 @@ class LanguageController extends GetxController {
       orElse: () => languages.first,
     );
     return currentLang['name'] as String;
-  }
-
-  // 原有的updateLocale方法需要确保触发语言切换
-  // 重命名方法以避免名称冲突
-  void updateLocaleNew(String languageCode) {
-    currentLanguageCode.value = languageCode;
-    _saveLanguageToStorage(languageCode);
-    Get.updateLocale(Locale(languageCode)); // 关键：更新应用locale
-    logger.d('【国际化】切换语言: $languageCode');
   }
 
   /// 从语言代码获取Locale对象
