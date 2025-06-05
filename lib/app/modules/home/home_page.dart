@@ -62,31 +62,31 @@ class HomePage extends StatelessWidget {
           children: [
             _buildFeatureCard(
               title: 'simple_counter'.tr,
-              description: '【简单状态管理】使用GetBuilder展示GetX的简单状态管理功能',
+              description: 'simple_counter_description'.tr,
               icon: Icons.add_circle_outline,
               onTap: () => Get.toNamed(Routes.SIMPLE_COUNTER),
             ),
             _buildFeatureCard(
               title: 'reactive_counter'.tr,
-              description: '【响应式状态管理】使用Obx和.obs展示GetX的响应式状态管理功能',
+              description: 'reactive_counter_description'.tr,
               icon: Icons.autorenew,
               onTap: () => Get.toNamed(Routes.REACTIVE_COUNTER),
             ),
             _buildFeatureCard(
               title: 'todo_list'.tr,
-              description: '【数据持久化】结合响应式状态管理和GetStorage展示数据持久化',
+              description: 'todo_list_description'.tr,
               icon: Icons.checklist,
               onTap: () => Get.toNamed(Routes.TODO),
             ),
             _buildFeatureCard(
               title: 'theme_settings'.tr,
-              description: '【主题管理】展示GetX的主题切换功能',
+              description: 'theme_settings_description'.tr,
               icon: Icons.color_lens,
               onTap: () => Get.toNamed(Routes.THEME),
             ),
             _buildFeatureCard(
               title: 'language_settings'.tr,
-              description: '【国际化】展示GetX的多语言支持功能',
+              description: 'language_settings_description'.tr,
               icon: Icons.translate,
               onTap: () => Get.toNamed(Routes.LANGUAGE),
             ),

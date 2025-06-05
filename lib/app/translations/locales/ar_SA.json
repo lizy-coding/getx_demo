@@ -38,5 +38,14 @@
   "english": "الإنجليزية",
   "chinese": "الصينية",
   "arabic": "العربية",
-  "current_language": "اللغة الحالية: @language"
+  "current_language": "اللغة الحالية: @language",
+  "memory_cleanup": "تنظيف الذاكرة",
+  "available_languages": "اللغات المتاحة",
+  "loading": "جاري التحميل...",
+  "information": "معلومات",
+  "simple_counter_description": "إدارة الحالة البسيطة باستخدام GetBuilder لعرض وظائف إدارة الحالة البسيطة في GetX",
+  "reactive_counter_description": "إدارة الحالة التفاعلية باستخدام Obx و .obs لعرض وظائف إدارة الحالة التفاعلية في GetX",
+  "todo_list_description": "استمرارية البيانات بدمج إدارة الحالة التفاعلية و GetStorage لعرض استمرارية البيانات",
+  "theme_settings_description": "إدارة السمة لعرض وظائف تبديل السمة في GetX",
+  "language_settings_description": "التدويل لعرض وظائف دعم اللغات المتعددة في GetX"
 }

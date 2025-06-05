@@ -28,7 +28,6 @@ class LanguageController extends GetxController {
 
   // Default full language code if no valid one is found
   static const String _defaultFullLanguageCode = 'en_US';
-  String? _previousLanguageCode; // 记录上一次使用的语言代码（新增）
 
   /// 当控制器被创建时调用
   @override
@@ -37,22 +36,24 @@ class LanguageController extends GetxController {
     _initDefaultLanguage();
   }
 
-  /// 初始化默认语言（仅加载中文）
+  /// 初始化默认语言
   void _initDefaultLanguage() async {
-    String savedLangFullCode = _loadLanguageFromStorage();
-    currentLanguageCode.value = savedLangFullCode; // Already ensured to be full or default full
+    // 预加载所有语言翻译
+    logger.d('开始预加载所有语言翻译');
+    await AppTranslations.preloadAllTranslations();
+    logger.d('翻译预加载完成，已加载: ${AppTranslations.loadedLanguages}');
     
-    logger.d('Initializing language to: ${currentLanguageCode.value}');
-    await AppTranslations.load(currentLanguageCode.value);
-    // No need to call updateLocale here as Get.updateLocale will be implicitly handled by GetX if needed,
-    // and translations are now loaded. Setting currentLanguageCode.value will trigger Obx listeners.
-    // If Get.updateLocale is strictly needed for initial locale setting beyond translations, 
-    // ensure it's called with the correct Locale object derived from currentLanguageCode.value.
-    // For now, let's assume GetX handles initial locale setting based on translations. 
-    // We might need to explicitly call Get.updateLocale if issues persist with initial UI rendering.
+    // 从存储中加载保存的语言设置
+    String savedLangFullCode = _loadLanguageFromStorage();
+    currentLanguageCode.value = savedLangFullCode; // 确保是全编码
+    
+    logger.d('初始化语言为: ${currentLanguageCode.value}');
+    
+    // 设置初始区域设置
     final initialLocale = _getLocaleFromFullCode(currentLanguageCode.value);
     if (initialLocale != null) {
       Get.updateLocale(initialLocale);
+      logger.d('已设置初始区域设置: $initialLocale');
     }
   }
 
@@ -68,31 +69,30 @@ class LanguageController extends GetxController {
   }
 
   /// 通过语言代码更新应用语言（关键修改）
-  void updateLocale(String languageCode) async { // Renamed parameter to languageCode
-    final String fullLanguageCode = _ensureFullLanguageCode(languageCode); // Ensure we have the full code
-    // 记录当前语言作为上一次语言（切换前）
-    if (currentLanguageCode.value.isNotEmpty) {
-      _previousLanguageCode = currentLanguageCode.value;
-    }
+  /// 更新应用语言
+  /// @param languageCode 语言代码，可以是短代码(en)或全代码(en_US)
+  void updateLocale(String languageCode) async {
+    final String fullLanguageCode = _ensureFullLanguageCode(languageCode);
+    logger.d('【国际化】更新语言: $languageCode -> $fullLanguageCode');
 
-    // 切换语言时加载对应JSON文件（未缓存时才加载）
-    await AppTranslations.load(fullLanguageCode);
-    
-    final locale = _getLocaleFromFullCode(fullLanguageCode); // Use new helper
-    if (locale != null) {
-      logger.d('Before Get.updateLocale. Target Locale: $locale, AppTranslations has keys for: ${AppTranslations.cachedLanguageCodes.toList()}');
-      Get.updateLocale(locale);
+    if (fullLanguageCode != currentLanguageCode.value) {
+      // 更新当前语言代码（这会触发UI刷新）
       currentLanguageCode.value = fullLanguageCode;
+      
+      // 保存语言设置到本地存储
       _saveLanguageToStorage(fullLanguageCode);
-      logger.d('【国际化】语言切换成功: $fullLanguageCode');
-
-      // 卸载上一次使用的语言缓存（非当前语言时）
-      if (_previousLanguageCode != null && _previousLanguageCode != fullLanguageCode) {
-        // AppTranslations.unload(_previousLanguageCode!); // Temporarily disabled for debugging
-        // logger.d('【国际化】已卸载旧语言缓存: $_previousLanguageCode (UNLOAD DISABLED)');
-        logger.d('【国际化】Skipping unload of old language cache for debugging: $_previousLanguageCode');
-      }
-      update(); // Notify GetBuilder listeners to rebuild
+      logger.d('【国际化】已保存语言设置: $fullLanguageCode');
+      
+      // 使用新的切换语言方法
+      // 由于所有翻译都已预加载，只需要切换Locale
+      AppTranslations.switchLanguage(fullLanguageCode);
+      
+      // 通知GetBuilder监听器重建
+      update();
+      
+      // 记录最终状态
+      logger.d('【国际化】语言切换完成: $fullLanguageCode');
+      logger.d('【国际化】当前加载的语言: ${AppTranslations.loadedLanguages}');
     }
   }
 
@@ -112,7 +112,7 @@ class LanguageController extends GetxController {
     updateLocale(nextLanguageFullCode);
     logger.d('【国际化】切换语言: $nextLanguageFullCode');
   }
-
+  
   /// 获取当前语言名称
   String get currentLanguageName {
     final currentLang = languages.firstWhere(

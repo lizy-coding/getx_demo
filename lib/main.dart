@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:getx_demo/app/controllers/theme_controller.dart';
@@ -11,15 +12,25 @@ import 'package:logger/logger.dart' show Logger;
 /// 应用入口
 /// 演示GetX框架的使用方法
 void main() async {
-  // 初始化Logger（已由GetX全局管理，无需单独初始化）
+  // 确保绑定完成
+  WidgetsFlutterBinding.ensureInitialized();
+  
   // 初始化GetStorage
   await GetStorage.init();
+  
+  // 初始化Logger
+  final logger = Get.put(AppLogger(), permanent: true);
+  logger.d('【GetX Demo】应用启动中...');
+  
+  // 预加载所有翻译
+  logger.d('【GetX Demo】开始预加载所有翻译');
+  await AppTranslations.preloadAllTranslations();
+  logger.d('【GetX Demo】翻译预加载完成，已加载: ${AppTranslations.loadedLanguages}');
 
   // 运行应用
   runApp(const MyApp());
 
   // 打印欢迎信息
-  final logger = Get.put(AppLogger(), permanent: true);
   logger.d('【GetX Demo】应用已启动');
   logger.d('【GetX Demo】这个演示应用展示了GetX的各种功能：');
   logger.d('【GetX Demo】1. 状态管理 - 简单状态管理和响应式状态管理');
