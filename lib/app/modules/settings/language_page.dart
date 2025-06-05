@@ -44,8 +44,11 @@ class LanguagePage extends GetView<LanguageController> {
                 isExpanded: true, // 让下拉框宽度撑满父容器
                 items:
                     controller.languages.map((language) {
+                      // Use full language code (e.g., 'en_US') instead of just language code (e.g., 'en')
+                      final locale = language['locale'] as Locale;
+                      final fullCode = locale.toString(); // Returns languageCode_countryCode
                       return DropdownMenuItem<String>(
-                        value: language['locale'].languageCode,
+                        value: fullCode,
                         child: Text(language['name'] as String),
                       );
                     }).toList(),
