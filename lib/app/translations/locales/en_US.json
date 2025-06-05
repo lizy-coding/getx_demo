@@ -37,5 +37,15 @@
   "language_title": "Language Settings",
   "english": "English",
   "chinese": "Chinese",
-  "current_language": "Current Language: @language"
+  "arabic": "Arabic",
+  "current_language": "Current Language: @language",
+  "memory_cleanup": "Cleaning memory",
+  "available_languages": "Available Languages",
+  "loading": "Loading...",
+  "information": "Information",
+  "simple_counter_description": "Simple state management using GetBuilder to demonstrate GetX's simple state management functionality",
+  "reactive_counter_description": "Reactive state management using Obx and .obs to demonstrate GetX's reactive state management functionality",
+  "todo_list_description": "Data persistence combining reactive state management and GetStorage to demonstrate data persistence",
+  "theme_settings_description": "Theme management demonstrating GetX's theme switching functionality",
+  "language_settings_description": "Internationalization demonstrating GetX's multi-language support functionality"
 }
