@@ -16,6 +16,45 @@ lib/
 ```
 ![getx_demo](https://github.com/lizy-coding/getx_demo/blob/master/getx_test.gif)
 
+## New Module Output Format
+
+Based on the `.prompt` rules, new modules must be output with:
+- Code or structure only; no explanations/tutorials/assumptions
+- Markdown is allowed, but each output contains exactly one file
+- If multiple files are required, split into multiple outputs
+- Additive changes only; no refactors or cross-module edits
+- Follow the existing project structure and naming
+
+Example:
+
+~~~md
+### lib/app/modules/feature/feature_page.dart
+```dart
+// code here
+```
+~~~
+
+Prompt Example (module add, multi-file, one-file-per-output):
+
+```text
+Add a new module: feature
+Files to add (one file per response):
+1) lib/app/modules/feature/feature_page.dart
+2) lib/app/controllers/feature_controller.dart
+3) lib/app/bindings/feature_binding.dart
+4) lib/app/routes/feature_routes.dart (append only)
+Rules:
+- Follow .prompt rules: code/structure only, no explanation
+- Additive changes only, no cross-module edits
+- Use GetX binding + route attached to page
+```
+
+How to use `.prompt` safely (avoid global impact):
+- Read `.prompt/*.rule.md` and keep changes inside the requested module
+- Always list exact files to create/modify; avoid touching shared/global files
+- If a global file must change (routes/translations), say "append only" and name it
+- Never change existing modules unless explicitly asked
+
 ## Features
 
 This project demonstrates the six core features of GetX:
