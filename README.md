@@ -225,3 +225,10 @@ flutter run
 ---
 
 If you have any questions, feel free to open an issue or reach out!
+
+
+
+
+LOAD .prompt/*
+ADD feature: reactive counter with worker
+SCOPE: lib/app/modules/counter
