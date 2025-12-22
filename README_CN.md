@@ -43,11 +43,7 @@ lib/
 
 ```text
 新增模块：feature
-需新增文件（每次仅输出一个文件）：
-1) lib/app/modules/feature/feature_page.dart
-2) lib/app/controllers/feature_controller.dart
-3) lib/app/bindings/feature_binding.dart
-4) lib/app/routes/feature_routes.dart（仅追加）
+需求描述
 规则：
 - 遵循 .prompt 规则：只输出代码/结构，不要解释
 - 仅增量修改，不跨模块改动

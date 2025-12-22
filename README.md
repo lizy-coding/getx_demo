@@ -34,27 +34,6 @@ Example:
 ```
 ~~~
 
-Prompt Example (module add, multi-file, one-file-per-output):
-
-```text
-Add a new module: feature
-Files to add (one file per response):
-1) lib/app/modules/feature/feature_page.dart
-2) lib/app/controllers/feature_controller.dart
-3) lib/app/bindings/feature_binding.dart
-4) lib/app/routes/feature_routes.dart (append only)
-Rules:
-- Follow .prompt rules: code/structure only, no explanation
-- Additive changes only, no cross-module edits
-- Use GetX binding + route attached to page
-```
-
-How to use `.prompt` safely (avoid global impact):
-- Read `.prompt/*.rule.md` and keep changes inside the requested module
-- Always list exact files to create/modify; avoid touching shared/global files
-- If a global file must change (routes/translations), say "append only" and name it
-- Never change existing modules unless explicitly asked
-
 ## Features
 
 This project demonstrates the six core features of GetX:
@@ -266,8 +245,3 @@ flutter run
 If you have any questions, feel free to open an issue or reach out!
 
 
-
-
-LOAD .prompt/*
-ADD feature: reactive counter with worker
-SCOPE: lib/app/modules/counter
