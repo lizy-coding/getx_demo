@@ -12,6 +12,24 @@ abstract class Routes {
   
   /// Todo列表页面
   static const TODO = '/todo';
+
+  /// 登录页面
+  static const LOGIN = '/login';
+
+  /// 认证守卫演示页面
+  static const AUTH_GUARD_DEMO = '/auth_guard_demo';
+
+  /// 受保护页面
+  static const PROTECTED = '/protected';
+
+  /// 生命周期实验室页面
+  static const LIFECYCLE_LAB = '/lifecycle_lab';
+
+  /// 生命周期子页面
+  static const LIFECYCLE_CHILD = '/lifecycle_child';
+
+  /// UI反馈工具演示页面
+  static const UI_FEEDBACK = '/ui_feedback';
   
   /// 主题设置页面
   static const THEME = '/theme';

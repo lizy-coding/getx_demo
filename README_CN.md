@@ -15,6 +15,43 @@ lib/
 └── main.dart              # 应用入口
 ```
 ![getx_demo](https://github.com/lizy-coding/getx_demo/blob/master/getx_test.gif)
+
+## 新增模块输出格式
+
+基于 `.prompt` 规则，后续新增模块请按以下格式输出：
+- 仅输出代码或目录结构，不附带解释/教程/假设
+- 允许使用 Markdown，但每次输出仅包含一个文件
+- 需要新增多个文件时，请拆分为多次输出
+- 仅允许增量变更，不做范围外重构或跨模块修改
+- 遵循现有项目结构与命名
+
+示例：
+
+~~~md
+### lib/app/modules/feature/feature_page.dart
+```dart
+// code here
+```
+~~~
+如何正确使用 `.prompt`（避免影响全局构造）：
+- 先阅读 `.prompt/*.rule.md`，只在需求模块内改动
+- 明确列出要新增/修改的具体文件，避免触碰全局/共享文件
+- 必须修改全局文件（如 routes/translations）时，注明“仅追加”
+- 未明确要求时，不改已有模块
+
+提词示例（新增模块，多文件拆分，单文件输出）：
+
+```text
+新增模块：feature
+需求描述
+规则：
+- 遵循 .prompt 规则：只输出代码/结构，不要解释
+- 仅增量修改，不跨模块改动
+- 使用 GetX binding，路由与页面绑定
+```
+
+
+
 ## 功能特性
 
 本项目展示了 GetX 的六大核心功能：

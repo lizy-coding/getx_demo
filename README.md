@@ -16,6 +16,24 @@ lib/
 ```
 ![getx_demo](https://github.com/lizy-coding/getx_demo/blob/master/getx_test.gif)
 
+## New Module Output Format
+
+Based on the `.prompt` rules, new modules must be output with:
+- Code or structure only; no explanations/tutorials/assumptions
+- Markdown is allowed, but each output contains exactly one file
+- If multiple files are required, split into multiple outputs
+- Additive changes only; no refactors or cross-module edits
+- Follow the existing project structure and naming
+
+Example:
+
+~~~md
+### lib/app/modules/feature/feature_page.dart
+```dart
+// code here
+```
+~~~
+
 ## Features
 
 This project demonstrates the six core features of GetX:
@@ -225,3 +243,5 @@ flutter run
 ---
 
 If you have any questions, feel free to open an issue or reach out!
+
+

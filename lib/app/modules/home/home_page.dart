@@ -55,43 +55,70 @@ class HomePage extends StatelessWidget {
           ),
         ],
       ),
-      body: Padding(
+      body: ListView(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            _buildFeatureCard(
-              title: 'simple_counter'.tr,
-              description: 'simple_counter_description'.tr,
-              icon: Icons.add_circle_outline,
-              onTap: () => Get.toNamed(Routes.SIMPLE_COUNTER),
-            ),
-            _buildFeatureCard(
-              title: 'reactive_counter'.tr,
-              description: 'reactive_counter_description'.tr,
-              icon: Icons.autorenew,
-              onTap: () => Get.toNamed(Routes.REACTIVE_COUNTER),
-            ),
-            _buildFeatureCard(
-              title: 'todo_list'.tr,
-              description: 'todo_list_description'.tr,
-              icon: Icons.checklist,
-              onTap: () => Get.toNamed(Routes.TODO),
-            ),
-            _buildFeatureCard(
-              title: 'theme_settings'.tr,
-              description: 'theme_settings_description'.tr,
-              icon: Icons.color_lens,
-              onTap: () => Get.toNamed(Routes.THEME),
-            ),
-            _buildFeatureCard(
-              title: 'language_settings'.tr,
-              description: 'language_settings_description'.tr,
-              icon: Icons.translate,
-              onTap: () => Get.toNamed(Routes.LANGUAGE),
-            ),
-          ],
-        ),
+        children: [
+          _buildFeatureCard(
+            title: 'simple_counter'.tr,
+            description: 'simple_counter_description'.tr,
+            icon: Icons.add_circle_outline,
+            onTap: () => Get.toNamed(Routes.SIMPLE_COUNTER),
+          ),
+          _buildFeatureCard(
+            title: 'reactive_counter'.tr,
+            description: 'reactive_counter_description'.tr,
+            icon: Icons.autorenew,
+            onTap: () => Get.toNamed(Routes.REACTIVE_COUNTER),
+          ),
+          _buildFeatureCard(
+            title: 'todo_list'.tr,
+            description: 'todo_list_description'.tr,
+            icon: Icons.checklist,
+            onTap: () => Get.toNamed(Routes.TODO),
+          ),
+          _buildFeatureCard(
+            title: 'auth_guard_demo'.tr,
+            description: 'auth_guard_demo_description'.tr,
+            icon: Icons.lock_outline,
+            onTap: () => Get.toNamed(Routes.AUTH_GUARD_DEMO),
+          ),
+          _buildFeatureCard(
+            title: 'login_title'.tr,
+            description: 'login_description'.tr,
+            icon: Icons.login,
+            onTap: () => Get.toNamed(Routes.LOGIN),
+          ),
+          _buildFeatureCard(
+            title: 'protected_title'.tr,
+            description: 'protected_description'.tr,
+            icon: Icons.verified_user,
+            onTap: () => Get.toNamed(Routes.PROTECTED),
+          ),
+          _buildFeatureCard(
+            title: 'lifecycle_lab'.tr,
+            description: 'lifecycle_lab_description'.tr,
+            icon: Icons.sync,
+            onTap: () => Get.toNamed(Routes.LIFECYCLE_LAB),
+          ),
+          _buildFeatureCard(
+            title: 'ui_feedback_demo'.tr,
+            description: 'ui_feedback_demo_description'.tr,
+            icon: Icons.notifications_active,
+            onTap: () => Get.toNamed(Routes.UI_FEEDBACK),
+          ),
+          _buildFeatureCard(
+            title: 'theme_settings'.tr,
+            description: 'theme_settings_description'.tr,
+            icon: Icons.color_lens,
+            onTap: () => Get.toNamed(Routes.THEME),
+          ),
+          _buildFeatureCard(
+            title: 'language_settings'.tr,
+            description: 'language_settings_description'.tr,
+            icon: Icons.translate,
+            onTap: () => Get.toNamed(Routes.LANGUAGE),
+          ),
+        ],
       ),
     );
   }
